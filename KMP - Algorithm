@@ -1,0 +1,48 @@
+class Solution {
+
+    public static void solve(String pat , int[] lps) {
+        
+        for(int i = 1; i < lps.length; i++) {
+            int j = lps[i - 1];
+            while(j > 0 && pat.charAt(i) != pat.charAt(j)) {
+                j = lps[j - 1];
+            }
+            if(pat.charAt(i) == pat.charAt(j)) {
+                j++;
+            }
+            lps[i] = j;
+            
+        }
+    }
+    ArrayList<Integer> search(String pat, String txt) {
+        // your code here
+        int n = pat.length();
+        int m = txt.length();
+        
+        int lps[] = new int[n];
+        solve(pat , lps);
+        
+        ArrayList<Integer> list = new ArrayList<>();
+        
+        int i = 0, j = 0;
+        while(i < m) {
+            if(txt.charAt(i) == pat.charAt(j)) {
+                i++;
+                j++;
+                if(j == n) {
+                    j = lps[j - 1];
+                    list.add(i - n);
+                }
+            }
+            else {
+                if(j > 0) {
+                    j = lps[j - 1];
+                }
+                else {
+                    i++;
+                }
+            }
+        }
+        return list;
+    }
+}
